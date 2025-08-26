@@ -1,5 +1,5 @@
 // src/components/BrandList.tsx
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { FaSquareFull } from 'react-icons/fa';
 import { useNavigate } from 'react-router-dom';
 import { apiPublic } from '../lib/axios'; // <-- public instance
@@ -22,7 +22,7 @@ const slugify = (raw?: string) => {
     .replace(/^-+|-+$/g, '');
 };
 
-const BrandList: React.FC<Props> = ({ vehicleType, onFilterChange }) => {
+const BrandList = ({ vehicleType, onFilterChange }: Props) => {
   const [brandCounts, setBrandCounts] = useState<BrandItem[]>([]);
   const [selectedMarka, setSelectedMarka] = useState('');
   const [seriler, setSeriler] = useState<string[]>([]);
@@ -204,17 +204,24 @@ const BrandList: React.FC<Props> = ({ vehicleType, onFilterChange }) => {
 
                         {seriSelected && modeller.length > 0 && (
                           <ul className="ml-4">
-                            {modeller.map((model) => (
-                              <li
-                                key={model}
-                                className="cursor-pointer flex items-center text-gray-800 hover:text-black"
-                                onClick={() => handleChange('model', model)}
-                                title={model}
-                              >
-                                <FaSquareFull className="text-xs mr-1" />
-                                <span className="truncate">{model}</span>
-                              </li>
-                            ))}
+                            {modeller.map((model) => {
+                              const modelSelected = selectedModel === model; // <-- selectedModel'i kullan
+                              return (
+                                <li
+                                  key={model}
+                                  className={`cursor-pointer flex items-center ${
+                                    modelSelected
+                                      ? 'text-red-600 font-bold'
+                                      : 'text-gray-800 hover:text-black'
+                                  }`}
+                                  onClick={() => handleChange('model', model)}
+                                  title={model}
+                                >
+                                  <FaSquareFull className="text-xs mr-1" />
+                                  <span className="truncate">{model}</span>
+                                </li>
+                              );
+                            })}
                           </ul>
                         )}
                       </li>

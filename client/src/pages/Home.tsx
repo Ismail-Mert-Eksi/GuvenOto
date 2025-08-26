@@ -1,5 +1,5 @@
 // src/pages/Home.tsx
-import React, { useEffect, useMemo, useRef, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import VehicleTypeSidebar from '../components/VehicleTypeSidebar';
 import VehicleTypeDrawer from '../components/VehicleTypeDrawer';

@@ -1,5 +1,5 @@
 // src/components/ImageGallery.tsx
-import React, { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { BiFullscreen, BiChevronLeft, BiChevronRight } from "react-icons/bi";
 
 type Props = {
@@ -8,7 +8,7 @@ type Props = {
   className?: string;
 };
 
-const ImageGallery: React.FC<Props> = ({ images, intervalMs = 5000, className }) => {
+const ImageGallery = ({ images, intervalMs = 5000, className }: Props) => {
   const safeImages =
     images && images.length > 0
       ? images
@@ -20,7 +20,9 @@ const ImageGallery: React.FC<Props> = ({ images, intervalMs = 5000, className })
   const pausedRef = useRef(false);
 
   const goTo = (next: number) =>
-    setIdx((p) => (next + safeImages.length) % safeImages.length);
+    // p kullanılmıyor → parametreyi kaldır
+    setIdx(() => (next + safeImages.length) % safeImages.length);
+
   const next = () => goTo(idx + 1);
   const prev = () => goTo(idx - 1);
 
@@ -28,7 +30,7 @@ const ImageGallery: React.FC<Props> = ({ images, intervalMs = 5000, className })
   useEffect(() => {
     if (pausedRef.current || !intervalMs || safeImages.length < 2) return;
     timerRef.current = window.setInterval(() => {
-      setIdx((p) => (p + 1) % safeImages.length);
+      setIdx((p) => (p + 1) % safeImages.length); // burada p kullanılıyor, sorun yok
     }, intervalMs) as unknown as number;
     return () => {
       if (timerRef.current) window.clearInterval(timerRef.current);

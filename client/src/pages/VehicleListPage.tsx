@@ -1,6 +1,6 @@
 // src/pages/VehicleListPage.tsx (şık sıralama barı ile)
 
-import React, { useEffect, useState } from 'react';
+import { Fragment, useEffect, useState } from 'react';
 import { useParams, useSearchParams } from 'react-router-dom';
 
 import CarCardHorizontal from '../components/CarCardHorizontal';
@@ -89,18 +89,6 @@ const VehicleListPage = () => {
   const [tempRangeFilters, setTempRangeFilters] = useState<Record<string, string>>({});
   const [tempCheckboxFilters, setTempCheckboxFilters] = useState<Record<string, string[] | string>>({});
 
-  const handleSort = (field: string) => {
-    const [currentField, currentOrder] = sort.split(':');
-    const newOrder = currentField === field && currentOrder === 'asc' ? 'desc' : 'asc';
-    const newSort = `${field}:${newOrder}`;
-    setPage(1);
-    setSort(newSort);
-
-    const query = new URLSearchParams(searchParams);
-    query.set('sort', newSort);
-    setSearchParams(query);
-  };
-
   useEffect(() => {
     const urlFilters: Record<string, string | string[]> = {};
     searchParams.forEach((value, key) => {
@@ -160,7 +148,6 @@ const VehicleListPage = () => {
           ...checkboxFilters,
         };
 
-        // İstekleri public instance ile yapıyoruz
         const res = await apiPublic.get('/cars', { params: allFilters });
 
         if (Array.isArray(res.data.data)) {
@@ -286,7 +273,7 @@ const VehicleListPage = () => {
             {Array.from({ length: totalPages }, (_, i) => i + 1)
               .filter((num) => num === 1 || num === totalPages || Math.abs(num - page) <= 2)
               .map((num, idx, arr) => (
-                <React.Fragment key={num}>
+                <Fragment key={num}>
                   {idx > 0 && num !== arr[idx - 1] + 1 && (
                     <span className="px-1 py-1 text-gray-500">...</span>
                   )}
@@ -300,7 +287,7 @@ const VehicleListPage = () => {
                   >
                     {num}
                   </button>
-                </React.Fragment>
+                </Fragment>
               ))}
 
             <button
